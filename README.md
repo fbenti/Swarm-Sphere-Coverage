@@ -21,6 +21,8 @@ This algorithm is meant to generate waypoints that guarantee complete coverage o
 
 ## Procedure
 
+![](docs/Merged.png)
+
 1. Spawn a certain number of points around a sphere (based on the sphere radius and the waypoints' density).
 
 2. Only the waypoints above the plane defined by the distance from the antenna are considered.
