@@ -63,7 +63,7 @@ def generate_points(direction =  np.zeros((3)), sphere_radius: float=5, distance
     if plot:
         # plot roots
         fig = plt.figure()
-        fig.suptitle("Waypoints around sphere", fontsize=12)
+        fig.suptitle("Antenna", fontsize=12)
         ax = fig.add_subplot(111, projection='3d')
         # for i in range(num_points):
         #     ax.scatter(X[i],Y[i],Z[i], s=30,color='r')#color=color_list[i])
@@ -85,10 +85,10 @@ def generate_points(direction =  np.zeros((3)), sphere_radius: float=5, distance
             # centers_[i,:] = R.apply(centers_[i,:]) 
             rot = np.array([X[i],Y[i],Z[i]])
             rot = R.apply(rot) 
-            ax.scatter(rot[0],rot[1],rot[2], marker='o', s=20, color='red',alpha = 0.3)
+            ax.scatter(rot[0],rot[1],rot[2], marker='o', s=0, color='red',alpha = 0.3)
         rot = np.array([X[-1],Y[-1],Z[-1]])
         rot = R.apply(rot)
-        ax.scatter(rot[0],rot[1],rot[2], marker='o', s=20, color='red',alpha = 0.3, label="Waypoints")
+        # ax.scatter(rot[0],rot[1],rot[2], marker='o', s=0, color='red',alpha = 0.3, label="Waypoints")
         
 
         R = Rotation.from_rotvec(direction)
@@ -103,35 +103,35 @@ def generate_points(direction =  np.zeros((3)), sphere_radius: float=5, distance
     
     #select only point above threshold
     points_thresh = points[:, np.argwhere(points[2,:] > distance_dir)]
-    if plot:
-        # plot roots
-        fig = plt.figure()
-        fig.suptitle("Selected waypoints", fontsize=12)
-        ax = fig.add_subplot(111, projection='3d')
+    # if plot:
+    #     # plot roots
+    #     fig = plt.figure()
+    #     fig.suptitle("Selected waypoints", fontsize=12)
+    #     ax = fig.add_subplot(111, projection='3d')
 
         
-        R = Rotation.from_rotvec(direction)
-        u, v, w = R.apply([0,0,1])
-        print(points_thresh.shape)
-        for i in range(points_thresh.shape[1]-1):
+    #     R = Rotation.from_rotvec(direction)
+    #     u, v, w = R.apply([0,0,1])
+    #     print(points_thresh.shape)
+    #     for i in range(points_thresh.shape[1]-1):
             
-            # ax.scatter(X[i],Y[i],Z[i], s=30,color='r')#color=color_list[i])
-            # centers_[i,:] = R.apply(centers_[i,:]) 
-            rot = np.array([points_thresh[0,i],points_thresh[1,i],points_thresh[2,i]]).reshape(3)
-            rot = R.apply(rot) 
-            ax.scatter(rot[0],rot[1],rot[2], marker='o', s=20, color='g',alpha = 0.3)
-        rot = np.array([points_thresh[0,-1],points_thresh[1,-1],points_thresh[2,-1]]).reshape(3)
-        rot = R.apply(rot)
-        ax.scatter(rot[0],rot[1],rot[2], marker='o', s=20, color='g',alpha = 0.3, label="Selected waypoints")
+    #         # ax.scatter(X[i],Y[i],Z[i], s=30,color='r')#color=color_list[i])
+    #         # centers_[i,:] = R.apply(centers_[i,:]) 
+    #         rot = np.array([points_thresh[0,i],points_thresh[1,i],points_thresh[2,i]]).reshape(3)
+    #         rot = R.apply(rot) 
+    #         ax.scatter(rot[0],rot[1],rot[2], marker='o', s=20, color='g',alpha = 0.3)
+    #     rot = np.array([points_thresh[0,-1],points_thresh[1,-1],points_thresh[2,-1]]).reshape(3)
+    #     rot = R.apply(rot)
+    #     ax.scatter(rot[0],rot[1],rot[2], marker='o', s=20, color='g',alpha = 0.3, label="Selected waypoints")
         
 
-        R = Rotation.from_rotvec(direction)
-        u, v, w = R.apply([0,0,1])
-        ax.quiver(0, 0, 0, u,v,w, length=2, normalize=True,label="Antenna")
-        ax.legend()
-        ax.set_xlabel('x')
-        ax.set_ylabel('y')
-        ax.set_zlabel('z')    
+    #     R = Rotation.from_rotvec(direction)
+    #     u, v, w = R.apply([0,0,1])
+    #     ax.quiver(0, 0, 0, u,v,w, length=2, normalize=True,label="Antenna")
+    #     ax.legend()
+    #     ax.set_xlabel('x')
+    #     ax.set_ylabel('y')
+    #     ax.set_zlabel('z')    
     return points_thresh
 
 def cluster_points(points: np.ndarray, sphere_radius: float=5, direction: np.ndarray=np.zeros((3)), num_drones: float=5, plot=False):
@@ -254,9 +254,9 @@ NUM_DRONES = 4
 
 if __name__ == "__main__":
     # Generate points around sphere.
-    points = generate_points(sphere_radius=SPHERE_RADIUS, direction = DIRECTION,distance_dir=DISTANCE_DIR, points_per_m2=POINTS_PER_M2, plot=False)
+    points = generate_points(sphere_radius=SPHERE_RADIUS, direction = DIRECTION,distance_dir=DISTANCE_DIR, points_per_m2=POINTS_PER_M2, plot=True)
     # Cluster points based on number of drones.
-    clusters, distance_matrices = cluster_points(points=points, sphere_radius=SPHERE_RADIUS, direction=DIRECTION, num_drones=NUM_DRONES, plot=False)
-    # # Find trajectories that satisfy complete coverage.
-    trajectories = find_trajectories(clusters=clusters, distance_matrices=distance_matrices, direction=DIRECTION, num_drones=NUM_DRONES, plot=True)
+    # clusters, distance_matrices = cluster_points(points=points, sphere_radius=SPHERE_RADIUS, direction=DIRECTION, num_drones=NUM_DRONES, plot=False)
+    # # # Find trajectories that satisfy complete coverage.
+    # trajectories = find_trajectories(clusters=clusters, distance_matrices=distance_matrices, direction=DIRECTION, num_drones=NUM_DRONES, plot=True)
     plt.show()
